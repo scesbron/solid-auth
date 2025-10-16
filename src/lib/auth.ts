@@ -1,6 +1,6 @@
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
-import { admin, twoFactor } from "better-auth/plugins";
+import { admin, customSession, twoFactor } from "better-auth/plugins";
 import { getRequestEvent } from "solid-js/web";
 import { db } from "~/api/db";
 import { users, account, session, verification } from '~/db/schema';
@@ -23,6 +23,10 @@ export const auth = betterAuth({
 	plugins: [
 		admin(),
 		twoFactor(),
+    customSession(async ({ user, session }) => {
+      const role = "test"
+      return { role, user, session };
+    }),
 	],
 });
 
