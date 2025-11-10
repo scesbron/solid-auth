@@ -1,9 +1,9 @@
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
-import { admin, customSession, twoFactor } from "better-auth/plugins";
+import { admin, customSession, twoFactor as twoFactorPlugin } from "better-auth/plugins";
 import { getRequestEvent } from "solid-js/web";
 import { db } from "~/api/db";
-import { users, account, session, verification } from '~/db/schema';
+import { users, account, session, verification, twoFactor } from '~/db/schema';
 
 export const auth = betterAuth({
 	secret: process.env.BETTER_AUTH_SECRET,
@@ -14,7 +14,7 @@ export const auth = betterAuth({
       account,
       session,
       verification,
-      twoFactor,
+      twoFactor
     },
 	}),
 	emailAndPassword: {
@@ -22,7 +22,7 @@ export const auth = betterAuth({
 	},
 	plugins: [
 		admin(),
-		twoFactor(),
+    twoFactorPlugin(),
     customSession(async ({ user, session }) => {
       const role = "test"
       return { role, user, session };
